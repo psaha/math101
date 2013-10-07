@@ -18,35 +18,11 @@ they are drawn by comparing genetic data. </p>
 species (chosen by you) , using data from one of the standard gene
 banks and the <i>Biopython</i> library. </p>
 
-<h3> Dot plots </h3>
-
-<p> We will consider the simplest form of sequence comparison:
-pairwise dot plots of matching sub-sequences.  To see how this works,
-let us consider the following strings. </p>
-
-<pre>
-x = "My care is loss of care, by old care done"
-y = "Your care is gain of care, by new care won"
-</pre>
-
-<p> and then plot a dot whenever a region of five characters matches
-between <code>x</code> and <code>y</code>.  We get the following. </p>
-
-<a href="dotplot.png"><img height="300" src="dotplot.png"
-                           alt="dot plot"/></a>
-
-<p> We can see how the five-character
-substring <code>"&nbsp;care"</code> produces a dot at
-(<i>x</i>=2,<i>y</i>=4), and then more dots as it appears again. </p>
-
-<p> Dot plots provide a convenient visual representation of the degree
-of mismatch between sequences.  They also help understand sequence
-alignment: an alignment is a path along a dot plot that optimizes some
-measure of matching. </p>
-
-<span class="prob">
-Write a program to produce a similar dot plot.
-</span>
+<p> The essential information for this project is on page, but you
+would like to know more, the first chapter of <a href=
+"http://www.amazon.de/Introduction-Bioinformatics-Arthur-M-Lesk/dp/0199208042/">
+Introduction to Bioinformatics by Lesk,</a> is very useful and
+readable. </p>
 
 <h3>Fetching genomes</h3>
 
@@ -96,6 +72,36 @@ print p.seq
 
 <p> The sequence is now in the string <code>seq</code> and ready to be
 analyzed. </p>
+
+<h3> Dot plots </h3>
+
+<p> We will consider the simplest form of sequence comparison:
+pairwise dot plots of matching sub-sequences.  To see how this works,
+let us consider the following strings. </p>
+
+<pre>
+x = "My care is loss of care, by old care done"
+y = "Your care is gain of care, by new care won"
+</pre>
+
+<p> and then plot a dot whenever a region of five characters matches
+between <code>x</code> and <code>y</code>.  We get the following. </p>
+
+<a href="dotplot.png"><img height="300" src="dotplot.png"
+                           alt="dot plot"/></a>
+
+<p> We can see how the five-character
+substring <code>"&nbsp;care"</code> produces a dot at
+(<i>x</i>=2,<i>y</i>=4), and then more dots as it appears again. </p>
+
+<p> Dot plots provide a convenient visual representation of the degree
+of mismatch between sequences.  They also help understand sequence
+alignment: an alignment is a path along a dot plot that optimizes some
+measure of matching. </p>
+
+<span class="prob">
+Write a program to produce a similar dot plot.
+</span>
 
 <h3> Phylogenetic trees </h3>
 
