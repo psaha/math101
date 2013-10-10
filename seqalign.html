@@ -6,46 +6,124 @@
 <title></title>
 </head>
 <body>
+<h5> Page version 1.0 (10 Oct 2013) </h5>
 
 <h1> Phylogenetic Trees </h1>
 
-<p> A phylogenetic tree is a diagram of evolutionary relationships
-between different species, or between larger groups of life forms.
-<a href='http://upload.wikimedia.org/wikipedia/commons/f/f5/Stammbaum_haeckel.jpg'>This early example</a> was drawn by Ernst Haeckel in 1874.  Nowadays,
-they are drawn by comparing genetic data. </p>
+<p> An early example of an evolutionary tree is
+<a href='http://upload.wikimedia.org/wikipedia/commons/f/f5/Stammbaum_haeckel.jpg'>
+this 1874 drawing by Ernst Haeckel.</a>  Nowadays, evolutionary trees
+are made by comparing genetic data, and are known as phylogenetic trees
+<a href='http://de.wikipedia.org/wiki/Phylogenetischer_Baum'>
+(phylogenetische B&auml;ume).</a>  That is to say, a phylogenetic tree
+is a diagram of evolutionary relationships between different species,
+or between larger groups of life forms, derived from their genomes. </p>
 
 <p> This project is to construct a phylogenetic tree of a selection of
 species (chosen by you) , using data from one of the standard gene
-banks and the <i>Biopython</i> library. </p>
-
-<p> The essential information for this project is on page, but you
-would like to know more, the first chapter of <a href=
+banks and the <i>Biopython</i> library.  The essential information for
+this project is on page, but you would like to know more, the first
+chapter of <a href=
 "http://www.amazon.de/Introduction-Bioinformatics-Arthur-M-Lesk/dp/0199208042/">
-Introduction to Bioinformatics by Lesk,</a> is very useful and
-readable. </p>
+Introduction to Bioinformatics by Lesk,</a> is very readable and informative. </p>
 
-<h3>Fetching genomes</h3>
+<h3>Genes and Proteins</h3>
+
+<p> The genome of an organism consists of a long sequence of DNA nor
+nucleotide bases,
+<i>Adenine,</i> <i>Thymine,</i> <i>Cytosine</i> and <i>Guanine,</i>
+abbreviated as <code>A,T,C,G.</code>  The full human genome consists
+of three billion of these, but is divided up into short sequences,
+about 20000 of them, called genes.  An individual gene has hundreds or
+thousands of bases, so it can be conveniently written down in a text
+file.  To see an example, go to
+the <a href='http://www.ncbi.nlm.nih.gov/'>NCBI database,</a> select
+`Nucleotide' in the option box, and type <code>sonic hedgehog</code>
+in the search box.  This will bring up lots of species.  Choose one,
+and then scroll down to see the DNA sequence. </p>
+
+<p> In order to do anything, a gene has to be first decoded of course.
+This involves converting the DNA sequence into a sequence of amino
+acids.  A sub-sequence of three DNA bases is called a codon, and a
+codon encodes for an amino acid.  Since there are four DNA bases,
+there are obviously 64 codons.  But most life forms use only 20 amino
+acids, so different codons may give the same amino acid.  A chain of
+amino acids is called a protein. </p>
+
+<p> Here is the standard genetic code for converting DNA codons to
+amino acids, expressed as a Python dictionary. Note how amino acids,
+like DNA bases, each have a one-letter abbreviation. </p>
+
+<pre>
+cdn = {}
+cdn['ttt'] = cdn['ttc'] = 'F phenylalanine'
+cdn['tta'] = cdn['ttg'] = 'L leucine'
+cdn['tct'] = cdn['tcc'] = cdn['tca'] = cdn['tcg'] = 'S serine'
+cdn['tat'] = cdn['tac'] = 'Y tyrosine'
+cdn['taa'] = cdn['tag'] = ' '
+cdn['tgt'] = cdn['tgc'] = 'C cysteine'
+cdn['tga'] = ' '
+cdn['tgg'] = 'W tryptophan'
+cdn['ctt'] = cdn['ctc'] = cdn['cta'] = cdn['ctg'] = 'L leucine'
+cdn['cct'] = cdn['ccc'] = cdn['cca'] = cdn['ccg'] = 'P proline'
+cdn['cat'] = cdn['cac'] = 'H histidine'
+cdn['caa'] = cdn['cag'] = 'Q glutamine'
+cdn['cgt'] = cdn['cgc'] = cdn['cga'] = cdn['cgg'] = 'R arginine'
+cdn['att'] = cdn['atc'] = cdn['ata'] = 'I isoleucine'
+cdn['atg'] = 'M methionine'
+cdn['act'] = cdn['acc'] = cdn['aca'] = cdn['acg'] = 'T threonine'
+cdn['aat'] = cdn['aac'] = 'N asparagine'
+cdn['aaa'] = cdn['aag'] = 'K lysine'
+cdn['agt'] = cdn['agc'] = 'S serine'
+cdn['aga'] = cdn['agg'] = 'R arginine'
+cdn['gtt'] = cdn['gtc'] = cdn['gta'] = cdn['gtg'] = 'V valine'
+cdn['gct'] = cdn['gcc'] = cdn['gca'] = cdn['gcg'] = 'A alanine'
+cdn['gat'] = cdn['gac'] = 'D aspartic acid'
+cdn['gaa'] = cdn['gag'] = 'E glutamic acid'
+cdn['ggt'] = cdn['ggc'] = cdn['gga'] = cdn['ggg'] = 'G glycine'
+</pre>
+
+<p> You could use this dictionary to convert a DNA sequence to a
+protein.  But it is not really necessary, as the genome data bases
+also provide protein sequences.  On the 
+<a href='http://www.ncbi.nlm.nih.gov/'>NCBI database,</a> you just
+need to select `Protein' instead of 'Nucleotide'. </p>
+
+<p class="prob">
+Invert the genetic code.  That is, write a program that takes the
+<code>cdn</code> dictionary above, and computes a new
+dictionary <code>aacid</code>, such that <code>aacid['glycine']</code>
+gives the list <code>['ggt','ggc','gga','ggg']</code> and so on.
+</p>
+
+<h3> UniProt </h3>
+
+<p> As we saw above, a protein is a many-to-one mapping of a DNA
+sequence.  So we can just work with a protein sequence.  We could get
+the data from any of the large databases, but we may as well focus on
+<a href="http://www.uniprot.org">UniProt,</a> the one associated with
+Swiss universities. </p>
 
 <p> Here is an example to fetch a protein sequence from <a href=
-"http://www.uniprot.org">UniProt</a> and save it in a text file. </p>
+"http://www.uniprot.org">UniProt</a> and save it in a text file, in
+the so-called GenBank format. </p>
 <pre>
-from Bio import ExPASy, SeqIO
-sid = raw_input('Sequence id? ')
-try:
-    handle = ExPASy.get_sprot_raw(sid)
-    seq = SeqIO.read(handle,'swiss')
-    SeqIO.write(seq, sid+'.genbank','genbank')
+from Bio import ExPASy, SeqIO                     # Install Biopython first!
+sid = raw_input('Sequence id? ')                  # User input (string)
+try:                                              # See below about try...except
+    handle = ExPASy.get_sprot_raw(sid)            # Access UniProt online ...
+    seq = SeqIO.read(handle,'swiss')              # ... and read the data.
+    SeqIO.write(seq, sid+'.genbank','genbank')    # Write it locally
     print 'Sequence length',len(seq)
 except Exception:
     print 'Sequence not found'
 </pre>
-<p> By replacing <code>genbank</code> with <code>fasta</code> you can
-change the output to FASTA format.  The sequence data are exactly the
-same, of course, but the GenBank format has more meta-data about who
-sequenced the gene and so on. </p>
-
-<p> This example also illustrates Python's <code>try...except</code>
-construction, which is useful for handling errors. </p>
+<p> Note the use of Python's <code>try...except</code> construction,
+which is useful for handling errors, so your program exits gracefully
+if you are offline or mistype the sequence name.  The sequence&nbsp;id
+is a six-character name that UniProt uses to specify the gene and
+species.  It appears on the first column when you get search
+results. </p>
 
 <p class="prob">
 The sequence id <code>F8RBX8</code> stands for the protein sequence of
@@ -54,66 +132,82 @@ it as a GenBank file.  Open the file using a text editor and read off the
 gene name and organism.
 </p>
 
-</div>
+<h3> Sequence Alignment </h3>
 
-<p> The method is easily applied to gene and protein sequences, we
-just need to get a sequence into a string.  We already know how to
-write a GenBank file with sequence data.  Let <code>fname</code> be a
-string with the name of such a file, then try the following. </p>
+<p> Comparing DNA or protein sequences of different species, to find
+matches and mismatches, is known as sequence alignment.  There are
+many techniques for this, and we will use the simplest one: `dot
+plots'. </p>
 
+<p> To see how dot plots work, consider the following strings. </p>
+<pre>
+x = "My care is loss of care, by old care done"
+y = "Your care is gain of care, by new care won"
+</pre>
+<p> Now let us plot a dot whenever a region of five characters matches
+between <code>x</code> and <code>y</code>.  We get the following. </p>
+<a href="dotplot.png"><img height="300" src="dotplot.png"
+                           alt="dot plot"/></a>
+<p> We can see how the five-character
+substring <code>"&nbsp;care"</code> produces a dot at
+(<i>x</i>=2,<i>y</i>=4), and then more dots as it appears again. </p>
+
+<p> Dot plots provide a convenient visual representation of the degree
+of mismatch between sequences.  They also help understand more
+sophisticated methods of sequence alignment: an alignment is a path
+along a dot plot, starting at bottom left and moving monotonically
+right and/or up till it reaches the top right, that optimizes some
+measure of matching. </p>
+
+<p class="prob">
+Write a function to produce a similar dot plot from two given strings
+and a given `window width' (5 in the above example).  This is the main
+computational challenge of this project.
+</p>
+
+<p> To create dot plots of protein sequences, we just need to get a
+sequence into a string.  We already know how to write a GenBank file
+with sequence data.  Let <code>fname</code> be a string with the name
+of such a file, then try the following. </p>
 <pre>
 from Bio import SeqIO
 f = open(fname)
 p = SeqIO.parse(f,'genbank').next()
 f.close()
 print p.annotations['organism']
-print p.seq
+seq = str(p.seq)
 </pre>
-
 <p> The sequence is now in the string <code>seq</code> and ready to be
 analyzed. </p>
 
-<h3> Dot plots </h3>
+<h3> Growing the tree </h3>
 
-<p> We will consider the simplest form of sequence comparison:
-pairwise dot plots of matching sub-sequences.  To see how this works,
-let us consider the following strings. </p>
+<p> Now we are ready to make up and draw the tree.  First, we need to
+choose a gene found in many species.  Sonic hedgehog is one
+possibility, of course.  But gene names are typically descriptive of
+function, like 'ATP synthase subunit alpha'.  The description here
+indicates that this gene is associated with the key energy-storing
+molecule <a href='http://de.wikipedia.org/wiki/Adenosintriphosphat'>ATP.</a>
+So this gene encodes some very basic life process and is good for
+comparing very diverse organisms.  (Be careful to choose exactly the
+same gene though, because sometimes different genes have somewhat
+similar names.) </p>
 
-<pre>
-x = "My care is loss of care, by old care done"
-y = "Your care is gain of care, by new care won"
-</pre>
+<p> Next, we need to make dot plots from species in pairs, and compare
+them visually.  A window size of 5 is good to start with, but we can
+increase or decrease it.  By examining the dot plots, one can infer
+the structure of the phylogenetic tree.  (One could also be more
+sophisticated, and use several statistical techniques.  These are
+necessary when comparing many species.  But for a few species, visual
+examination is usually sufficient.) </p>
 
-<p> and then plot a dot whenever a region of five characters matches
-between <code>x</code> and <code>y</code>.  We get the following. </p>
-
-<a href="dotplot.png"><img height="300" src="dotplot.png"
-                           alt="dot plot"/></a>
-
-<p> We can see how the five-character
-substring <code>"&nbsp;care"</code> produces a dot at
-(<i>x</i>=2,<i>y</i>=4), and then more dots as it appears again. </p>
-
-<p> Dot plots provide a convenient visual representation of the degree
-of mismatch between sequences.  They also help understand sequence
-alignment: an alignment is a path along a dot plot that optimizes some
-measure of matching. </p>
-
-<span class="prob">
-Write a program to produce a similar dot plot.
-</span>
-
-<h3> Phylogenetic trees </h3>
-
-<p> We can try and infer the relationship between species from protein
-sequences.  There are all sorts of statistical techniques one can use,
-but simple examination already gives some clues.  We can type our
-guessed relationship into a text file. </p>
+<p> The last step is actually drawing the tree.  For this, we type
+our inferred relationship, say </p>
 <pre>
 (((Human, Neandertal), Chimpanzee), (Cat, Lion))
 </pre>
-<p> called <code>tree.txt</code> (say).  This is the Newick format.
-Then </p>
+<p> called <code>tree.txt</code> (or whatever).  This is know as the
+Newick format.  Then </p>
 <pre>
 from Bio import Phylo
 tree = Phylo.read('tree.txt','newick')
@@ -122,15 +216,14 @@ Phylo.draw(tree)
 </pre>
 <p> will draw a tree for us. </p>
 
-<span class="prob">
-<p>Choose a gene found in many species and make some dot plots comparing
-the corresponding amino-acid sequence in different pairs of species.
-Try and infer the phylogenetic relationships of a few species from the
-dot plots, express it in Newick, and hence produce a phylogenetic
-tree. </p>
-</span>
+<p class="prob">
+Produce a phylogenetic tree using the tools described above.  You may
+wish to compare closely-related species (cats, lions, etc) or very
+diverse groups (humans to shiitake mushrooms).  You may use one gene
+or several.  Just come up with something interesting!
+</p>
 
-<h3> NP-completeness </h3>
+<h3> Computational complexity </h3>
 
 <p> Multiple sequence alignment is a famously hard problem. The
 computer resources needed to guarantee finding the optimal alignment
